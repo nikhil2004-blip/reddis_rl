@@ -1,6 +1,7 @@
 const dotenv = require('dotenv');
 dotenv.config();
 
+const path = require('path');
 const express = require('express');
 const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
@@ -12,7 +13,12 @@ const PORT = process.env.PORT || 3000;
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.static('public')); // Serve frontend files
+app.use(express.static(path.join(__dirname, '../public'))); // Serve frontend files
+
+// Explicitly serve index.html for root
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/index.html'));
+});
 
 // Global Rate Limiter (Applied to all routes for demonstration, or specific ones)
 // We will apply it specifically to the "Spam API" route in the frontend demo, 
