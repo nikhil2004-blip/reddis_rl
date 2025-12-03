@@ -1,0 +1,23 @@
+{
+  "name": "redis-rate-limiter-auth",
+  "version": "1.0.0",
+  "description": "Demonstration of Redis for Rate Limiting and JWT Auth using Upstash",
+  "main": "src/server.js",
+  "engines": {
+    "node": ">=18.x"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
+  },
+  "dependencies": {
+    "@upstash/redis": "^1.28.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.1",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.3"
+  }
+}
