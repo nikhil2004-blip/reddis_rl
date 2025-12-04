@@ -31,6 +31,22 @@ app.get('/api/public', (req, res) => {
     res.json({ message: 'This is a public endpoint. No auth required.' });
 });
 
+// Health Check Endpoint
+app.get('/api/health', async (req, res) => {
+    try {
+        const { Redis } = require('@upstash/redis');
+        const redis = new Redis({
+            url: process.env.UPSTASH_REDIS_REST_URL,
+            token: process.env.UPSTASH_REDIS_REST_TOKEN,
+        });
+        await redis.ping();
+        res.json({ status: 'ok', message: 'Redis connection successful' });
+    } catch (error) {
+        console.error('Health Check Failed:', error);
+        res.status(500).json({ status: 'error', message: 'Redis connection failed', error: error.message });
+    }
+});
+
 // Endpoint specifically to test Rate Limiting
 app.get('/api/spam', rateLimiter, (req, res) => {
     res.json({ message: 'You successfully hit the spam endpoint! Redis allowed this.' });

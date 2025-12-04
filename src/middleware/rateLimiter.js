@@ -11,7 +11,12 @@ const WINDOW_DURATION = 10; // In seconds
 
 const rateLimiter = async (req, res, next) => {
     try {
-        const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+        // Fix for Vercel/Proxies: x-forwarded-for can be a list of IPs
+        let ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+        if (ip && ip.indexOf(',') > -1) {
+            ip = ip.split(',')[0].trim();
+        }
+
         const key = `ratelimit:${ip}`;
 
         // Atomic increment
